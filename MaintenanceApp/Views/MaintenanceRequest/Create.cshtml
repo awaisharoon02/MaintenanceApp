@@ -1,0 +1,199 @@
+﻿@model MaintenanceApp.Models.RequestMaintenanceModel
+@{
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+
+<form asp-action="Create" asp-controller="MaintenanceRequest" method="POST">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="Id" />
+
+    <div class="container">
+        <h4 class="text-center mb-4">REQUEST FOR MAINTENANCE ACTION</h4>
+        <div class="row">
+            <div class="col-md-6">
+                <label class="form-label">Request No</label>
+                <input class="form-control" type="text" disabled />
+                <label></label>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label" asp-for="@Model.RequestDate">Date</label>
+                <input class="form-control" type="date" asp-for="@Model.RequestDate" />
+                @Html.ValidationMessageFor(model => model.RequestDate)
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <label class="form-label">Request status</label>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" asp-for="@Model.RequestStatus" value="Normal" id="Normal" />
+                    <label class="form-check-label" for="Normal">Normal</label>
+                    
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" asp-for="@Model.RequestStatus" value="Urgent" id="Urgent" />
+                    <label class="form-check-label" for="Urgent">Urgent</label>
+                </div>
+                @Html.ValidationMessageFor(model => model.RequestStatus)
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">Request for</label>
+                @for (int i = 0; i < Model.RequestFor.Count; i++)
+                {
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="RequestFor" value="@Model.RequestFor[i]" id="RequestFor_@i" />
+                        <label class="form-check-label" for="RequestFor_@i">@Model.RequestFor[i]</label>
+                    </div>
+                }
+            </div>
+            @Html.ValidationMessageFor(model => model.RequestFor)
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <label class="form-label">Machine Status</label>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" asp-for="@Model.MachineState" value="Running" id="MachineRunning" />
+                    <label class="form-check-label" for="MachineRunning">Running</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" asp-for="@Model.MachineState" value="Idle" id="MachineIdle" />
+                    <label class="form-check-label" for="MachineIdle">Idle</label>
+                </div>
+                @Html.ValidationMessageFor(model => model.MachineState)
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">Department/Section</label>
+                <input class="form-control" type="text" asp-for="Department" />
+                @Html.ValidationMessageFor(model => model.Department)
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <label class="form-label" for="RequestedBy">Requested By</label>
+                <input class="form-control" type="text" asp-for="RequestedBy" />
+                @Html.ValidationMessageFor(model => model.RequestedBy)
+            </div>
+            <div class="col-md-4">
+                <label class="form-label" for="ReceivedBy">Received By</label>
+                <input class="form-control" type="text" asp-for="ReceivedBy" />
+                @Html.ValidationMessageFor(model => model.ReceivedBy)
+                <label class="form-label" for="ReceivedTime">Received Time</label>
+                <input class="form-control" type="time" asp-for="ReceivedTime" />
+                @Html.ValidationMessageFor(model => model.ReceivedTime)
+            </div>
+            <div class="col-md-4">
+                <label class="form-label" for="Machine">Machine</label>
+                <input class="form-control" type="text" asp-for="Machine" />
+                @Html.ValidationMessageFor(model => model.Machine)
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="mb-3">
+                    <label for="Description" class="form-label">Description of Problem (To be filled by Initiator)</label>
+                    <textarea class="form-control" asp-for="Description" rows="3"></textarea>
+                    @Html.ValidationMessageFor(model => model.Description)
+                </div>
+
+                <!-- Proposed Action -->
+                <div class="mb-3">
+                    <label for="Proposal" class="form-label">Your Proposed Action (If required, To be filled by Initiator)</label>
+                    <textarea class="form-control" asp-for="Proposal" rows="3"></textarea>
+                    @Html.ValidationMessageFor(model => model.DescriptionAction)
+                </div>
+
+                <!-- Review of Problem -->
+                <div class="mb-3">
+                    <p class="form-label">Review of Problem (To be filled by the Maintenance Section)</p>
+                    <div>
+                        @for (int i = 0; i < Model.ReviewOfProblem.Count; i++)
+                        {
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="ReviewOfProblem" value="@Model.ReviewOfProblem[i]" id="ReviewOfProblem_@i" />
+                                <label class="form-check-label" for="ReviewOfProblem_@i">@Model.ReviewOfProblem[i]</label>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="DescriptionAction" class="form-label">Description of Action (To be filled by the Maintenance Section)</label>
+                    <textarea class="form-control" asp-for="DescriptionAction" rows="3"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <label class="form-label">Status of Machine</label>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" asp-for="@Model.MachineState2" value="Idle" id="Idle2" />
+                    <label class="form-check-label" for="Idle2">Idle</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" asp-for="@Model.MachineState2" value="Running" id="Running2" />
+                    <label class="form-check-label" for="Running2">Running</label>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-time form-time-inline">
+                    <input class="form-control" type="time" asp-for="MachineRunning" />
+                    <label class="form-label" for="MachineRunning">If running write time</label>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">Status of Request</label>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" asp-for="@Model.StatufOfRequest" value="Open" id="StatufOfRequestOpen" />
+                    <label class="form-check-label" for="StatufOfRequestOpen">Open</label>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" asp-for="@Model.StatufOfRequest" value="Closed" id="StatufOfRequestClosed" />
+                        <label class="form-check-label" for="StatufOfRequestClosed">Closed</label>
+                    </div>
+                </div>
+            </div>
+               
+            <div class="col-md-6">
+                <div class="form-text form-text-inline">
+                    <label class="form-label" for="RequestOpen">If Open, request will be closed by</label>
+                    <input class="form-control" type="text" asp-for="RequestOpen" />
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-text form-text-inline">
+                    <label class="form-label" for="ActionTakenBy">Action taken by</label>
+                    <input class="form-control" type="text" asp-for="ActionTakenBy" />
+                </div>
+                <div class="form-date form-date-inline">
+                    <label class="form-label" for="ActionTakenDate">Date</label>
+                    <input class="form-control" type="date" asp-for="ActionTakenDate" />
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-check form-check-inline">
+                    <label class="form-label" for="ActionApprovedBy">Action approved by</label>
+                    <input class="form-control" type="text" asp-for="ActionApprovedBy" />
+                </div>
+                <div class="form-date form-date-inline">
+                    <label class="form-label" for="ActionApprovedDate">Date</label>
+                    <input class="form-control" type="date" asp-for="ActionApprovedDate" />
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>
+
+
+
+

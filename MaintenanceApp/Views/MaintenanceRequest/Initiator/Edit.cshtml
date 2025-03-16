@@ -1,0 +1,137 @@
+﻿@model MaintenanceApp.Models.RequestMaintenanceModel
+@{
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+<form asp-action="SubmitEdit" asp-controller="MaintenanceRequest" method="POST">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="@Model.Id" />
+
+    <div class="container">
+        <h4 class="text-center mb-4">REQUEST FOR MAINTENANCE ACTION</h4>
+        <div class="row">
+            <div class="col-md-6">
+                <label class="form-label">Request No</label>
+                <input class="form-control" value="@Model.Id" type="text" disabled />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label" for="@Model.RequestDate">Date</label>
+                <input class="form-control" type="date" asp-for="@Model.RequestDate" />
+                <div class="text-danger">
+                    @Html.ValidationMessageFor(model => model.RequestDate)
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <label class="form-label">Request status</label>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" asp-for="@Model.RequestStatus" value="Normal" id="Normal" />
+                    <label class="form-check-label" for="Normal">Normal</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" asp-for="@Model.RequestStatus" value="Urgent" id="Urgent" />
+                    <label class="form-check-label" for="Urgent">Urgent</label>
+                </div>
+                <div class="text-danger">
+                    @Html.ValidationMessageFor(model => model.RequestStatus)
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">Request for</label>
+                @for (int i = 0; i < Model.phraseModel.Count; i++)
+                {
+                    if (Model.phraseModel[i].Category == "Request For")
+                    {
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="RequestFor" value="@Model.phraseModel[i].Phrase" id="RequestFor_@i"
+                            @(Model.phraseModel[i].IsChecked ? "checked" : "") />
+                            <label class="form-check-label" for="RequestFor_@i">@Model.phraseModel[i].Phrase</label>
+                        </div>
+                    }
+
+                }
+            </div>
+            <div class="text-danger">
+                @Html.ValidationMessageFor(model => model.RequestFor)
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <label class="form-label">Machine Status</label>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" asp-for="@Model.MachineState" value="Running" id="MachineRunning" />
+                    <label class="form-check-label" for="MachineRunning">Running</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" asp-for="@Model.MachineState" value="Idle" id="MachineIdle" />
+                    <label class="form-check-label" for="MachineIdle">Idle</label>
+                </div>
+                <div class="text-danger">
+                    @Html.ValidationMessageFor(model => model.MachineState)
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">Department/Section</label>
+                <input class="form-control" type="text" asp-for="Department" />
+                <div class="text-danger">
+                    @Html.ValidationMessageFor(model => model.Department)
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <label class="form-label" for="RequestedBy">Requested By</label>
+                <input class="form-control" type="text" asp-for="RequestedBy" />
+                <div class="text-danger">
+                    @Html.ValidationMessageFor(model => model.RequestedBy)
+                </div>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label" for="ReceivedBy">Received By</label>
+                <input class="form-control" type="text" asp-for="ReceivedBy" />
+                <div class="text-danger">
+                    @Html.ValidationMessageFor(model => model.ReceivedBy)
+                </div>
+                <label class="form-label" for="ReceivedTime">Received Time</label>
+                <input class="form-control" type="time" asp-for="ReceivedTime" />
+                <div class="text-danger">
+                    @Html.ValidationMessageFor(model => model.ReceivedTime)
+                </div>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label" for="Machine">Machine</label>
+                <input class="form-control" type="text" asp-for="Machine" />
+                <div class="text-danger">
+                    @Html.ValidationMessageFor(model => model.Machine)
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="mb-3">
+                    <label for="Description" class="form-label">Description of Problem (To be filled by Initiator)</label>
+                    <textarea class="form-control" asp-for="Description" rows="3"></textarea>
+                    <div class="text-danger">
+                        @Html.ValidationMessageFor(model => model.Description)
+                    </div>
+                </div>
+
+                <!-- Proposed Action -->
+                <div class="mb-3">
+                    <label for="Proposal" class="form-label">Your Proposed Action (If required, To be filled by Initiator)</label>
+                    <textarea class="form-control" asp-for="Proposal" rows="3"></textarea>
+                    <div class="text-danger">
+                        @Html.ValidationMessageFor(model => model.Proposal)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>

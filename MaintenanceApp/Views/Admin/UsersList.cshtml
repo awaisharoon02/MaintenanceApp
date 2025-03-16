@@ -1,0 +1,26 @@
+﻿@{
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+@using MaintenanceApp.Controllers
+@model List<ApplicationUser>
+
+<h2>Users List</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.Email</td>
+                <td>
+                    <a href="@Url.Action("EditUserRoles", "Admin", new { userId = user.Id })" class="btn btn-primary">Manage Roles</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

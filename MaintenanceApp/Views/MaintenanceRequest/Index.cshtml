@@ -1,0 +1,558 @@
+﻿@model List<MaintenanceApp.Models.RequestMaintenanceModel>
+@{
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    <div id="success-message" class="alert alert-success" style="display:none;"></div>
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div id="successMessage" class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+
+        <script>
+            setTimeout(function () {
+                $("#successMessage").fadeOut("slow");
+            }, 3000); // Hide after 3 seconds
+        </script>
+    }
+        <h2>Maintenance Status</h2>
+        
+        <!-- Tabs Navigation -->
+        <ul class="nav nav-tabs" id="statusTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab" aria-controls="all" aria-selected="true">All</button>
+        </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="new-tab" data-bs-toggle="tab" data-bs-target="#new" type="button" role="tab" aria-controls="new" aria-selected="true">New</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="pending-tab" data-bs-toggle="tab" data-bs-target="#pending" type="button" role="tab" aria-controls="pending" aria-selected="false">Pending</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="completed-tab" data-bs-toggle="tab" data-bs-target="#completed" type="button" role="tab" aria-controls="completed" aria-selected="false">Completed</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="acknowledged-tab" data-bs-toggle="tab" data-bs-target="#acknowledged" type="button" role="tab" aria-controls="acknowledged" aria-selected="false">Acknowledged</button>
+            </li>
+        </ul>
+
+        <!-- Tabs Content -->
+        <div class="tab-content mt-3" id="statusTabsContent">
+        <div class="tab-pane fade show active" id="all" href="all" role="tabpanel" aria-labelledby="all-tab">
+            <h4>All</h4>
+            <div class="table responsive">
+
+                <table id="AllTable" class="display table table-striped table-bordered nowrap" width="100%">
+                    <thead>
+                        <tr>
+                            <th>RequestID</th>
+                            <th>Requst Date</th>
+                            <th>Department</th>
+                            <th>Requested By</th>
+                            <th>Received By</th>
+                            <th>Form Status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Rows will be dynamically populated -->
+                    </tbody>
+                </table>
+            </div>
+         </div>
+            <div class="tab-pane fade" id="new" href="new" role="tabpanel" aria-labelledby="new-tab">
+                <h4>New</h4>
+            <a href="/MaintenanceRequest/Initiator/Create" class="btn btn-lg btn-light">Create</a>
+               <div class="table responsive">
+                <table id="NewTable" class="display table table-striped table-bordered nowrap" width="100%">
+                    <thead>
+                        <tr>
+                            <th>RequestID</th>
+                            <th>Requst Date</th>
+                            <th>Department</th>
+                            <th>Requested By</th>
+                            <th>Received By</th>
+                            <th>Form Status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Rows will be dynamically populated -->
+                    </tbody>
+                </table>
+               </div>
+           </div>
+            <div class="tab-pane fade" id="pending" href="pending" role="tabpanel" aria-labelledby="pending-tab">
+                <h4>New</h4>
+                <div class="table responsive">
+                <table id="NewTable1" class="display table table-striped table-bordered nowrap" width="100%">
+                    <thead>
+                        <tr>
+                            <th>RequestID</th>
+                            <th>Requst Date</th>
+                            <th>Department</th>
+                            <th>Requested By</th>
+                            <th>Received By</th>
+                            <th>Form Status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Rows will be dynamically populated -->
+                    </tbody>
+                </table>
+                </div>
+                <h4>Pending</h4>
+            <div class="table responsive">
+                <table id="PendingTable" class="display table table-striped table-bordered nowrap" width="100%">
+                    <thead>
+                        <tr>
+                            <th>RequestID</th>
+                            <th>Requst Date</th>
+                            <th>Department</th>
+                            <th>Requested By</th>
+                            <th>Received By</th>
+                            <th>Form Status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Rows will be dynamically populated -->
+                    </tbody>
+                </table>
+                </div>
+
+            </div>
+            <div class="tab-pane fade" id="completed" role="tabpanel" aria-labelledby="completed-tab">
+                <h4>Pending</h4>
+            <div class="table responsive">
+                <table id="PendingTable1" class="display table table-striped table-bordered nowrap" width="100%">
+                    <thead>
+                        <tr>
+                            <th>RequestID</th>
+                            <th>Requst Date</th>
+                            <th>Department</th>
+                            <th>Requested By</th>
+                            <th>Received By</th>
+                            <th>Form Status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Rows will be dynamically populated -->
+                    </tbody>
+                </table>
+                </div>
+
+                <h4>Completed</h4>
+            <div class="table responsive">
+                <table id="CompletedTable" class="display nowrap table table-striped table-bordered" width="100%">
+                <thead>
+                    <tr>
+                        <th>RequestID</th>
+                        <th>Requst Date</th>
+                        <th>Department</th>
+                        <th>Requested By</th>
+                        <th>Received By</th>
+                            <th>Form Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Rows will be dynamically populated -->
+                </tbody>
+            </table>
+            </div>
+            </div>
+            <div class="tab-pane fade" id="acknowledged" role="tabpanel" aria-labelledby="acknowledged-tab">
+                <h4>Completed</h4>
+                <div class="table responsive">
+                    <table id="CompletedTable1" class="display nowrap table table-striped table-bordered" width="100%">
+                        <thead>
+                            <tr>
+                                <th>RequestID</th>
+                                <th>Requst Date</th>
+                                <th>Department</th>
+                                <th>Requested By</th>
+                                <th>Received By</th>
+                                <th>Form Status</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Rows will be dynamically populated -->
+                        </tbody>
+                    </table>
+                </div>
+                <h4>Acknowledged</h4>
+            <div class="table responsive">
+                <table id="AcknowledgedTable" class="display table table-striped table-bordered nowrap" width="100%">
+                <thead>
+                    <tr>
+                        <th>RequestID</th>
+                        <th>Requst Date</th>
+                        <th>Department</th>
+                        <th>Requested By</th>
+                        <th>Received By</th>
+                        <th>Form Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Rows will be dynamically populated -->
+                </tbody>
+            </table>
+            </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+        $('#AllTable').DataTable({  
+            serverSide: true,      // Enable server-side processing
+            responsive: true,
+            ajax: {
+                url: '/MaintenanceRequest/GetRequests',  // Your endpoint
+                type: 'POST',
+                datatype: 'json',// HTTP method
+                data: function(d) {
+                // Add a parameter to the AJAX request
+                d.formStatus = 'All';  // Send the "New" status with the request
+            }
+            },
+            columns: [
+                { data: 'id', name: 'ID', autoWidth: true },               // Match with the model property
+                { data: 'requestDate', name: 'RequestDate', autoWidth: true },
+                { data: 'department', name: 'Department', autoWidth: true },
+                { data: 'requestedBy', name: 'RequestedBy', autoWidth: true },
+                { data: 'receivedBy', name: 'ReceivedBy', autoWidth: true },
+                { data: 'formStatus', title: 'FormStatus' },
+                {
+                    data: null,
+                    render: function (data, type, row) {
+                        return `<a href="/MaintenanceRequest/Details/${row.id}" class="btn btn-sm btn-info">View</a>`;
+                    }
+                }
+            ]
+        });
+    });
+            $(document).ready(function () {
+        $('#NewTable').DataTable({  
+            serverSide: true,      // Enable server-side processing
+            responsive: true,
+            ajax: {
+                url: '/MaintenanceRequest/GetRequests',  // Your endpoint
+                type: 'POST',
+                datatype: 'json',// HTTP method
+                data: function(d) {
+                // Add a parameter to the AJAX request
+                d.formStatus = 'New';  // Send the "New" status with the request
+            }
+            },
+            columns: [
+                { data: 'id', name: 'ID', autoWidth: true },               // Match with the model property
+                { data: 'requestDate', name: 'RequestDate', autoWidth: true },
+                { data: 'department', name: 'Department', autoWidth: true },
+                { data: 'requestedBy', name: 'RequestedBy', autoWidth: true },
+                { data: 'receivedBy', name: 'ReceivedBy', autoWidth: true },
+                { data: 'formStatus', title: 'FormStatus' },
+                {
+                    data: null,
+                    render: function (data, type, row) {
+                        return `<a href="/MaintenanceRequest/Details/${row.id}" class="btn btn-sm btn-info">View</a>
+                        <a href="/MaintenanceRequest/Initiator/Edit/${row.id}" class="btn btn-sm btn-warning">Edit</a>
+                        <a href="javascript:void(0);" class="btn btn-sm btn-danger" onclick="deleteRequest('${row.id}', '${row.formStatus}')">Delete</a>`;
+                    }
+                }
+            ],
+            columnDefs: [
+        {
+            targets: 5, 
+            visible: false
+        }
+    ]
+        });
+    });
+    $(document).ready(function () {
+        $('#PendingTable').DataTable({
+            serverSide: true,      // Enable server-side processing
+            responsive: true,
+            ajax: {
+                url: '/MaintenanceRequest/GetRequests',  // Your endpoint
+                type: 'POST',
+                datatype: 'json',// HTTP method
+                data: function(d) {
+                // Add a parameter to the AJAX request
+                d.formStatus = 'Pending';  // Send the "New" status with the request
+            }
+            },
+            columns: [
+                { data: 'id', name: 'ID', autoWidth: true },               // Match with the model property
+                { data: 'requestDate', name: 'RequestDate', autoWidth: true },
+                { data: 'department', name: 'Department', autoWidth: true },
+                { data: 'requestedBy', name: 'RequestedBy', autoWidth: true },
+                { data: 'receivedBy', name: 'ReceivedBy', autoWidth: true },
+                { data: 'formStatus', title: 'FormStatus' },
+                {
+                    data: null,
+                    render: function (data, type, row) {
+                        return `<a href="/MaintenanceRequest/Details/${row.id}" class="btn btn-sm btn-info">View</a>
+                        <a href="/MaintenanceRequest/Maintainer/Edit/${row.id}" class="btn btn-sm btn-warning">Edit</a>
+                        <a href="javascript:void(0);" class="btn btn-sm btn-danger" onclick="deleteRequest('${row.id}', '${row.formStatus}')">Delete</a>`;
+                    }
+                }
+            ],
+            columnDefs: [
+        {
+            targets: 5,
+            visible: false
+        }
+    ]
+        });
+    });
+        $(document).ready(function () {
+            $('#NewTable1').DataTable({
+                serverSide: true,      // Enable server-side processing
+                responsive: true,
+                ajax: {
+                    url: '/MaintenanceRequest/GetRequests',  // Your endpoint
+                    type: 'POST',
+                    datatype: 'json',// HTTP method
+                    data: function(d) {
+                    // Add a parameter to the AJAX request
+                    d.formStatus = 'New';  // Send the "New" status with the request
+                }
+                },
+                columns: [
+                    { data: 'id', name: 'ID', autoWidth: true },               // Match with the model property
+                    { data: 'requestDate', name: 'RequestDate', autoWidth: true },
+                    { data: 'department', name: 'Department', autoWidth: true },
+                    { data: 'requestedBy', name: 'RequestedBy', autoWidth: true },
+                    { data: 'receivedBy', name: 'ReceivedBy', autoWidth: true },
+                    { data: 'formStatus', title: 'FormStatus' },
+                    {
+                        data: null,
+                        render: function (data, type, row) {
+                            return `<a href="/MaintenanceRequest/Details/${row.id}" class="btn btn-sm btn-info">View</a>
+                            <a href="/MaintenanceRequest/Maintainer/Edit/${row.id}" class="btn btn-sm btn-warning">Edit</a>`;
+                        }
+                    }
+                ],
+                columnDefs: [
+            {
+                targets: 5,
+                visible: false
+            }
+        ]
+            });
+        });
+    $(document).ready(function () {
+        $('#CompletedTable').DataTable({
+            serverSide: true,      // Enable server-side processing
+            responsive: true,
+            ajax: {
+                url: '/MaintenanceRequest/GetRequests',  // Your endpoint
+                type: 'POST',
+                datatype: 'json',// HTTP method
+                data: function(d) {
+                // Add a parameter to the AJAX request
+                d.formStatus = 'Completed';  // Send the "New" status with the request
+            }
+            },
+            columns: [
+                { data: 'id', name: 'ID', autoWidth: true },               // Match with the model property
+                { data: 'requestDate', name: 'RequestDate', autoWidth: true },
+                { data: 'department', name: 'Department', autoWidth: true },
+                { data: 'requestedBy', name: 'RequestedBy', autoWidth: true },
+                { data: 'receivedBy', name: 'ReceivedBy', autoWidth: true },
+                { data: 'formStatus', title: 'FormStatus' },
+                {
+                    data: null,
+                    render: function (data, type, row) {
+                        return `<a href="/MaintenanceRequest/Details/${row.id}" class="btn btn-sm btn-info">View</a>
+                        <a href="/MaintenanceRequest/Maintainer/Edit2/${row.id}" class="btn btn-sm btn-warning">Edit</a>
+                        <a href="javascript:void(0);" class="btn btn-sm btn-danger" onclick="deleteRequest('${row.id}', '${row.formStatus}')">Delete</a>`;
+                    }
+                }
+            ],
+            columnDefs: [
+        {
+            targets: 5,
+            visible: false
+        }
+    ]
+        });
+    });
+        $(document).ready(function () {
+            $('#PendingTable1').DataTable({
+                serverSide: true,      // Enable server-side processing
+                responsive: true,
+                ajax: {
+                    url: '/MaintenanceRequest/GetRequests',  // Your endpoint
+                    type: 'POST',
+                    datatype: 'json',// HTTP method
+                    data: function(d) {
+                    // Add a parameter to the AJAX request
+                    d.formStatus = 'Pending';  // Send the "New" status with the request
+                }
+                },
+                columns: [
+                    { data: 'id', name: 'ID', autoWidth: true },               // Match with the model property
+                    { data: 'requestDate', name: 'RequestDate', autoWidth: true },
+                    { data: 'department', name: 'Department', autoWidth: true },
+                    { data: 'requestedBy', name: 'RequestedBy', autoWidth: true },
+                    { data: 'receivedBy', name: 'ReceivedBy', autoWidth: true },
+                    { data: 'formStatus', title: 'FormStatus' },
+                    {
+                        data: null,
+                        render: function (data, type, row) {
+                            return `<a href="/MaintenanceRequest/Details/${row.id}" class="btn btn-sm btn-info">View</a>
+                            <a href="/MaintenanceRequest/Maintainer/Edit2/${row.id}" class="btn btn-sm btn-warning">Edit</a>`;
+                        }
+                    }
+                ],
+                columnDefs: [
+            {
+                targets: 5,
+                visible: false
+            }
+        ]
+            });
+        });
+    $(document).ready(function () {
+        $('#AcknowledgedTable').DataTable({
+            serverSide: true,      // Enable server-side processing
+            responsive: true,
+            ajax: {
+                url: '/MaintenanceRequest/GetRequests',  // Your endpoint
+                type: 'POST',
+                datatype: 'json',// HTTP method
+                data: function(d) {
+                // Add a parameter to the AJAX request
+                d.formStatus = 'Acknowledged';  // Send the "New" status with the request
+            }
+            },
+            columns: [
+                { data: 'id', name: 'ID', autoWidth: true },               // Match with the model property
+                { data: 'requestDate', name: 'RequestDate', autoWidth: true },
+                { data: 'department', name: 'Department', autoWidth: true },
+                { data: 'requestedBy', name: 'RequestedBy', autoWidth: true },
+                { data: 'receivedBy', name: 'ReceivedBy', autoWidth: true },
+                { data: 'formStatus', title: 'FormStatus' },
+                {
+                    data: null,
+                    render: function (data, type, row) {
+                        return `<a href="/MaintenanceRequest/Details/${row.id}" class="btn btn-sm btn-info">View</a>
+                        <a href="/MaintenanceRequest/Acknowledge/Edit/${row.id}" class="btn btn-sm btn-warning">Edit</a>`;
+                    }
+                }
+            ],
+            columnDefs: [
+        {
+            targets: 5,
+            visible: false
+        }
+    ]
+        });
+    });
+        $(document).ready(function () {
+            $('#CompletedTable1').DataTable({
+                serverSide: true,      // Enable server-side processing
+                responsive: true,
+                ajax: {
+                    url: '/MaintenanceRequest/GetRequests',  // Your endpoint
+                    type: 'POST',
+                    datatype: 'json',// HTTP method
+                    data: function(d) {
+                    // Add a parameter to the AJAX request
+                    d.formStatus = 'Completed';  // Send the "New" status with the request
+                }
+                },
+                columns: [
+                    { data: 'id', name: 'ID', autoWidth: true },               // Match with the model property
+                    { data: 'requestDate', name: 'RequestDate', autoWidth: true },
+                    { data: 'department', name: 'Department', autoWidth: true },
+                    { data: 'requestedBy', name: 'RequestedBy', autoWidth: true },
+                    { data: 'receivedBy', name: 'ReceivedBy', autoWidth: true },
+                    { data: 'formStatus', title: 'FormStatus' },
+                    {
+                        data: null,
+                        render: function (data, type, row) {
+                            return `<a href="/MaintenanceRequest/Details/${row.id}" class="btn btn-sm btn-info">View</a>
+                            <a href="/MaintenanceRequest/Acknowledge/Edit/${row.id}" class="btn btn-sm btn-warning">Edit</a>`;
+                        }
+                    }
+                ],
+                columnDefs: [
+            {
+                targets: 5,
+                visible: false
+            }
+        ]
+            });
+        });
+            function deleteRequest(id, formStatus) {
+        if (confirm('Are you sure you want to delete this request?')) {
+            $.ajax({
+                url: '/MaintenanceRequest/Delete', // Adjusted to match the server-side method
+                type: 'POST',
+                data: { id: id, FormStatus: formStatus }, // Send both parameters
+                success: function (response) {
+                    alert(response.message); // Show success message
+                    // Reload all DataTables to reflect the deletion
+                    // $('#NewTable').DataTable().ajax.reload();
+                    // $('#PendingTable').DataTable().ajax.reload();
+                    // $('#CompletedTable').DataTable().ajax.reload();
+                    // $('#AcknowledgedTable').DataTable().ajax.reload();
+                    switch (formStatus.toLowerCase()) {
+                    case 'New':
+                        $('#NewTable').DataTable().ajax.reload();
+                        break;
+                    case 'Pending':
+                        $('#PendingTable').DataTable().ajax.reload();
+                        $('#NewTable1').DataTable().ajax.reload();
+                        break;
+                    case 'Completed':
+                        $('#CompletedTable').DataTable().ajax.reload();
+                        $('#PendingTable1').DataTable().ajax.reload();
+                        break;
+                    case 'acknowledged':
+                        $('#AcknowledgedTable').DataTable().ajax.reload();
+                        $('#CompletedTable1').DataTable().ajax.reload();
+                        break;
+                    default:
+                        // If the status is unknown, refresh all tables
+                        $('#NewTable').DataTable().ajax.reload();
+                        $('#PendingTable').DataTable().ajax.reload();
+                        $('#CompletedTable').DataTable().ajax.reload();
+                        $('#AcknowledgedTable').DataTable().ajax.reload();
+                        break;
+                }
+                },
+                error: function (xhr) {
+                    const errorMsg = xhr.responseJSON?.message || 'An error occurred during the deletion process.';
+                    alert(errorMsg); // Show detailed error message
+                }
+            });
+        }
+    }
+    $(document).ready(function () {
+        // Get the query parameter value
+        const urlParams = new URLSearchParams(window.location.search);
+        const activeTab = urlParams.get('tab');
+
+        if (activeTab) {
+            // Activate the corresponding tab
+            $(`#${activeTab}-tab`).tab('show');
+        }
+    });
+    </script>
+

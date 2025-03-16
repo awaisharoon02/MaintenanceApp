@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Dashboard>
+  <Title Text="Sample Dashboard" />
+  <DataSources>
+    <SqlDataSource Name="requestMaintenanceModel" ComponentName="sqlDataSource1">
+      <Connection Name="DefaultConnection" FromAppConfig="true" />
+      <Query Type="SelectQuery" Name="requestMaintenanceModel">
+        <Parameter Name="year" Type="System.DateTime">638728416000000000</Parameter>
+        <Tables>
+          <Table Name="requestMaintenanceModel" />
+        </Tables>
+        <Columns>
+          <Column Table="requestMaintenanceModel" Name="Id" />
+          <Column Table="requestMaintenanceModel" Name="RequestDate" />
+          <Column Table="requestMaintenanceModel" Name="Department" />
+          <Column Table="requestMaintenanceModel" Name="RequestedBy" />
+          <Column Table="requestMaintenanceModel" Name="ReceivedBy" />
+          <Column Table="requestMaintenanceModel" Name="ReceivedTime" />
+          <Column Table="requestMaintenanceModel" Name="Machine" />
+          <Column Table="requestMaintenanceModel" Name="Description" />
+          <Column Table="requestMaintenanceModel" Name="Proposal" />
+          <Column Table="requestMaintenanceModel" Name="DescriptionAction" />
+          <Column Table="requestMaintenanceModel" Name="MachineRunning" />
+          <Column Table="requestMaintenanceModel" Name="RequestOpen" />
+          <Column Table="requestMaintenanceModel" Name="ActionTakenBy" />
+          <Column Table="requestMaintenanceModel" Name="ActionTakenDate" />
+          <Column Table="requestMaintenanceModel" Name="ActionApprovedBy" />
+          <Column Table="requestMaintenanceModel" Name="ActionApprovedDate" />
+          <Column Table="requestMaintenanceModel" Name="ActionAcknowledgedBy" />
+          <Column Table="requestMaintenanceModel" Name="ActionAcknowledgedDate" />
+          <Column Table="requestMaintenanceModel" Name="ReviewRemarks" />
+          <Column Table="requestMaintenanceModel" Name="FormStatus" />
+        </Columns>
+      </Query>
+      <ConnectionOptions CloseConnection="true" />
+      <CalculatedFields>
+        <CalculatedField Name="requesetdate" Expression="ToDateTime([RequestDate]) " DataType="DateTime" DataMember="requestMaintenanceModel" />
+      </CalculatedFields>
+    </SqlDataSource>
+  </DataSources>
+  <Items>
+    <Chart ComponentName="chartDashboardItem1" Name="Chart 1" DataSource="sqlDataSource1" DataMember="requestMaintenanceModel">
+      <InteractivityOptions MasterFilterMode="Single" IsDrillDownEnabled="true" />
+      <DataItems>
+        <Measure DataMember="Id" SummaryType="Count" DefaultId="DataItem0" />
+        <Dimension DataMember="requesetdate" DateTimeGroupInterval="Month" DefaultId="DataItem1" />
+      </DataItems>
+      <Arguments>
+        <Argument DefaultId="DataItem1" />
+      </Arguments>
+      <Panes>
+        <Pane Name="Pane 1">
+          <Series>
+            <Simple>
+              <Value DefaultId="DataItem0" />
+            </Simple>
+          </Series>
+        </Pane>
+      </Panes>
+    </Chart>
+    <ComboBox ComponentName="comboBoxDashboardItem1" Name="Year" DataSource="sqlDataSource1" DataMember="requestMaintenanceModel" EnableSearch="true" ComboBoxType="Checked">
+      <DataItems>
+        <Dimension DataMember="requesetdate" DefaultId="DataItem0" />
+      </DataItems>
+      <FilterDimensions>
+        <Dimension DefaultId="DataItem0" />
+      </FilterDimensions>
+    </ComboBox>
+    <DateFilter ComponentName="dateFilterDashboardItem1" Name="Date Filter 1" DataSource="sqlDataSource1" DataMember="requestMaintenanceModel" FilterString="[DataItem0] = 2025" FilterType="Exact">
+      <DataItems>
+        <Dimension DataMember="requesetdate" DefaultId="DataItem0" />
+      </DataItems>
+      <Dimension DefaultId="DataItem0" />
+    </DateFilter>
+  </Items>
+  <LayoutTree>
+    <LayoutGroup>
+      <LayoutGroup Orientation="Vertical">
+        <LayoutGroup Weight="0.556473829201102">
+          <LayoutItem DashboardItem="comboBoxDashboardItem1" Weight="0.556473829201102" />
+          <LayoutItem DashboardItem="dateFilterDashboardItem1" Weight="0.556473829201102" />
+        </LayoutGroup>
+        <LayoutItem DashboardItem="chartDashboardItem1" Weight="1.443526170798898" />
+      </LayoutGroup>
+    </LayoutGroup>
+  </LayoutTree>
+</Dashboard>
